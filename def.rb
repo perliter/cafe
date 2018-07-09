@@ -8,3 +8,11 @@ def read_file_line(filename)
     f.close
     return arr
 end
+
+#エラー処理
+def error_cgi
+	print "Content-Type:text/html;charset=EUC\n\n"
+	print "*** CGI Error List ***<br />"
+	print "#{CGI.escapeHTML($!.inspect)}<br />"
+	$@.each {|x| print CGI.escapeHTML(x), "<br />"}
+end

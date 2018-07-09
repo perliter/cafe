@@ -4,15 +4,6 @@ require 'cgi'
 require './def'
 cgi = CGI.new
 
-def error_cgi
-	print "Content-Type:text/html;charset=EUC\n\n"
-	print "*** CGI Error List ***<br />"
-	print "#{CGI.escapeHTML($!.inspect)}<br />"
-	$@.each {|x| print CGI.escapeHTML(x), "<br />"}
-end
-
-
-
 def plus_each_ele(filename_to_write, *arr)
     temp = read_file_line(filename_to_write)
     f=open(filename_to_write, "w:UTF-8")
