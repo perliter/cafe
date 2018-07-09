@@ -1,3 +1,4 @@
+kitchen.csv
 desk_num,NumOfMenu1,NumOfMenu2,NumOfMenu3,...,memo,//ここ以降はキッチンに表示しない NumOfPeople  は会計時に
 8,2,0,0,0,1,1,memo,4
 9,1,0,0,0,2,2,memo,3
