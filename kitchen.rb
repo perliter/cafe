@@ -9,6 +9,7 @@ def error_cgi
 	print "#{CGI.escapeHTML($!.inspect)}<br />"
 	$@.each {|x| print CGI.escapeHTML(x), "<br />"}
 end
+
 #1行ずつファイルを読んで配列に
 def read_file_line(filename)
     arr=[]
