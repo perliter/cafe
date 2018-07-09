@@ -20,6 +20,7 @@ def read_file_line(filename)
     f.close
     return arr
 end
+
 def plus_each_ele(filename_to_write, *arr)
     temp = read_file_line(filename_to_write)
     f=open(filename_to_write, "w:UTF-8")
