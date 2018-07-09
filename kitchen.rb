@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'cgi'
+require './def'
 cgi = CGI.new
 
 def error_cgi
@@ -10,16 +11,7 @@ def error_cgi
 	$@.each {|x| print CGI.escapeHTML(x), "<br />"}
 end
 
-#1行ずつファイルを読んで配列に
-def read_file_line(filename)
-    arr=[]
-    f=open(filename, "r+:UTF-8")
-        while line = f.gets
-            arr << line.chomp
-        end
-    f.close
-    return arr
-end
+
 
 def plus_each_ele(filename_to_write, *arr)
     temp = read_file_line(filename_to_write)
@@ -27,6 +19,7 @@ def plus_each_ele(filename_to_write, *arr)
         temp.each_with_index{ |item, i| f.write((item.to_i + arr[i].to_i).to_s+"\n")}
     f.close
 end
+
 def zeroize(filename)
     f=open(filename, "w:UTF-8")
         11.times do
