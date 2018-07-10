@@ -22,38 +22,47 @@ def zeroize(filename)
 end
 begin
     tableform = ""
-    kitchen_data = CSV.read('kitchen.csv', headers: true)
-    tableform += <<-EOS
-        <div style="display:table-cell; border:1px solid #666">
-            <table border="1">
-                <tr><th>席番号</th><th>#{kitchen_data[0]["desk_num"]}</th></tr>
-    EOS
-    kitchen_data.each do |line|
+    kitchen_data = CSV.read('kitchen.csv', headers: true, encoding: "utf-8")
+    kitchen_data.each_with_index do |line, i|
         line.each do |key, value|
-            unless value == "0" then
-                print "a"
+            case
+                #最初
+                when key == "desk_num" then print <<-EOS
+                    <div style="display:table-cell; border:1px solid #666">
+                        <table border="1">
+                            <tr><th>卓番号</th><th>#{line["desk_num"][value]}</th></tr>
+                    EOS
+                #最後
+                when key == "NumOfPeople" then print <<-EOS
+                            <tr> <td>提供済み</td> <td><input type="checkbox" name="served" value="#{line["desk_num"][i]}"></td> </tr>
+                        </table>
+                    </div>
+                    EOS
+                #真ん中
+                when value != "0" then print "<tr><td>#{key}</td><td>#{value}</td></tr>" unless value == nil
+            end
+        end
+    end
+=begin
+        tableform += <<-EOS
+            <div style="display:table-cell; border:1px solid #666">
+                <table border="1">
+                    <tr><th>席番号</th><th>#{kitchen_data[0]["desk_num"]}</th></tr>
+        EOS
+        line.each do |key, value|
+            if value != "0" && key != "desk_num" then
                 tableform += <<-EOS
                     <tr><td>#{key}</td><td>#{value}</td></tr>
                 EOS
             end
         end
+        tableform += <<-EOS
+                    <tr> <td>提供済み</td> <td><input type="checkbox" name="served" value="#{kitchen_data[0]["desk_num"]}"></td> </tr>
+                </table>
+            </div>
+        EOS
     end
-=begin    CSV.foreach('kitchen.csv', headers: true) do |line|
-        line.each do |key, value|
-            unless value = 0 then
-            tableform += <<-EOS
-                <tr><td>#{key}</td><td>#{value}</td></tr>
-            EOS
-            end
-        end
-    end
-=end
-    tableform += <<-EOS
-                <tr> <td>提供済み</td> <td><input type="checkbox" name="served" value="#{kitchen_data[0]["desk_num"]}"></td> </tr>
-            </table>
-        </div>
-    EOS
-=begin
+
 served = cgi.params["served"]
 
 desk_nums_serving = read_file_line("serving")
