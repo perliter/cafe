@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'cgi'
+require 'csv'
 require './def'
 cgi = CGI.new
-
+print cgi.header("text/html; charset=utf-8")
+print "<html><body>"
 def plus_each_ele(filename_to_write, *arr)
     temp = read_file_line(filename_to_write)
     f=open(filename_to_write, "w:UTF-8")
@@ -19,7 +21,39 @@ def zeroize(filename)
     f.close
 end
 begin
-
+    tableform = ""
+    kitchen_data = CSV.read('kitchen.csv', headers: true)
+    tableform += <<-EOS
+        <div style="display:table-cell; border:1px solid #666">
+            <table border="1">
+                <tr><th>席番号</th><th>#{kitchen_data[0]["desk_num"]}</th></tr>
+    EOS
+    kitchen_data.each do |line|
+        line.each do |key, value|
+            unless value == "0" then
+                print "a"
+                tableform += <<-EOS
+                    <tr><td>#{key}</td><td>#{value}</td></tr>
+                EOS
+            end
+        end
+    end
+=begin    CSV.foreach('kitchen.csv', headers: true) do |line|
+        line.each do |key, value|
+            unless value = 0 then
+            tableform += <<-EOS
+                <tr><td>#{key}</td><td>#{value}</td></tr>
+            EOS
+            end
+        end
+    end
+=end
+    tableform += <<-EOS
+                <tr> <td>提供済み</td> <td><input type="checkbox" name="served" value="#{kitchen_data[0]["desk_num"]}"></td> </tr>
+            </table>
+        </div>
+    EOS
+=begin
 served = cgi.params["served"]
 
 desk_nums_serving = read_file_line("serving")
@@ -48,13 +82,12 @@ desk_nums_serving.each{ |desk_num|
     }
     tableform << "<tr><td>提供済み</td><td><input type=\"checkbox\" name=\"served\" value=\"#{desk_num}\"></td></tr></table></div>"
 }
+=end
 rescue
     error_cgi
 end 
-print cgi.header("text/html; charset=utf-8")
 print <<EOF
-<html><body>
-    <form name="update" action="./hq.rb" method="post">
+    <form name="update" action="./kitchen.rb" method="post">
         <div style="display:table; ">
         #{tableform}
         </div>
