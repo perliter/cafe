@@ -8,7 +8,6 @@ begin
     kitchen_data = CSV.read('kitchen.csv', encoding: "utf-8")
     register_data = CSV.read('register.csv', encoding: "utf-8")
     menu_name = CSV.read('MenuData.csv', encoding: "utf-8")[0].to_a + ["memo"]
-#    menu_name = menu_data[0].to_a + ["memo"]
  
     tableform = ""#html書き込み用
     f=CSV.open('kitchen.csv','w:utf-8')
@@ -74,5 +73,4 @@ print <<EOF
     </form>
 </body></html>
 EOF
-
  

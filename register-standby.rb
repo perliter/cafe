@@ -1,31 +1,28 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'cgi'
+require 'csv'
+require './def'
 cgi = CGI.new
-
-def read_file_line(filename)
-    arr=[]
-    f=open(filename, "r+:UTF-8")
-        while line = f.gets
-            arr << line.chomp
-        end
-    f.close
-    return arr
-end
-def zeroize(filename)
-    temp=read_file_line("MenuName.txt")
-    f=open(filename, "w:UTF-8")
-        (temp.size+1).times do
-            f.write("0\n")
-        end
-    f.close
-end
-
-unless cgi["desk_num"]==nil then
-    zeroize(cgi["desk_num"])
-end
-
 print cgi.header("text/html; charset=utf-8")
+
+unless cgi["desk_num"] == "" then
+    desk_num = cgi["desk_num"].to_i - 1
+    register_data = CSV.read('register.csv', encoding: "utf-8")
+    register_data[desk_num].each_with_index do |value, i|
+        if value =~ /^[0-9]+$/ then
+           register_data[desk_num][i] = 0
+        else   
+            register_data[desk_num][i] = "memo"
+        end
+    end
+    f=CSV.open('register.csv', 'w+:utf-8')
+        register_data.each do |row|
+            puts row
+        end
+    f.close
+end
+
 print <<EOF
 <html><body>
     <form name="gotomain" action="./register-main.rb" method="post">

@@ -18,19 +18,11 @@ f=CSV.open('MenuData.csv', 'w:UTF-8')
     f.puts prices
 f.close
 
-=begin
-kitchen_data = ["desk_of_num"]
-kitchen_data += names
-kitchen_data += ["memo", "NumOfPeople"]
-f=CSV.open('kitchen.csv', 'w:UTF-8')
-    f.puts kitchen_data
-f.close
-=end
 register_data = Array.new()
 names.size.times do
     register_data << "0" 
 end
-register_data += ["memo", "0"]
+register_data += ["", "0"]
 f=CSV.open('register.csv', 'w:UTF-8')
     num_of_desk.to_i.times do
         f.puts register_data

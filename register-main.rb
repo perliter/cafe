@@ -1,32 +1,26 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'cgi'
+require 'csv'
+require './def'
 cgi = CGI.new
 print cgi.header("text/html; charset=utf-8")
-def error_cgi
-	print "Content-Type:text/html;charset=EUC\n\n"
-	print "*** CGI Error List ***<br />"
-	print "#{CGI.escapeHTML($!.inspect)}<br />"
-	$@.each {|x| print CGI.escapeHTML(x), "<br />"}
-end
-
-#1行ずつファイルを読んで配列に
-def read_file_line(filename)
-    arr=[]
-    f=open(filename, "r+:UTF-8")
-        while line = f.gets
-            arr << line.chomp
-        end
-    f.close
-    return arr
-end
-
 begin
+desk_num = cgi["desk_num"].to_i - 1
+#paid_line_nums = cgi.params["to_pay"]
+#if to_pay == nil then write orderlog
 
-#paid_line_nums = -1
-paid_line_nums = cgi.params["to_pay"]
-desk_num = cgi["desk_num"]
+register_data_selected = CSV.read('register.csv', encoding: "utf-8")[desk_num].to_a
+menu_name = CSV.read('MenuData.csv', encoding: "utf-8")[0].to_a + ["memo"]
 
+
+
+
+
+
+
+
+=begin
 #卓ファイルの更新と表示用HTMLの準備
 menu_names = read_file_line("MenuName.txt")
 menu_prices = read_file_line("MenuPrice.txt")
@@ -62,7 +56,10 @@ f=open(desk_num, "w:UTF-8")#精算済みのものを数を減らして書き込�
         f.write("#{unpaid_quantity}\n")
     }
 f.close
-
+=end
+rescue
+    error_cgi
+end
 print <<EOF
 <html><body>
     #{htm_paid}
@@ -79,6 +76,3 @@ print <<EOF
     </form>
 </body></html>
 EOF
-rescue
-    error_cgi
-end
