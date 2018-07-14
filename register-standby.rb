@@ -13,12 +13,12 @@ unless cgi["desk_num"] == "" then
         if value =~ /^[0-9]+$/ then
            register_data[desk_num][i] = 0
         else   
-            register_data[desk_num][i] = "memo"
+            register_data[desk_num][i] = ""
         end
     end
     f=CSV.open('register.csv', 'w+:utf-8')
         register_data.each do |row|
-            puts row
+            f.puts row
         end
     f.close
 end

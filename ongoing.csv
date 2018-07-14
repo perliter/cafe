@@ -25,5 +25,9 @@ desk_num
 log.csv
 8,3,0,0,0,memo+memo,4,date,time
 
-
-
+検討事項
+memoにはmemoって書いておいたほうが事故が少ない？
+registerで誤った卓番号を選択した際の処理
+数量の選択はプルダウンのほうが良い？
+orderlogにTIME
+会計対象を選択しないで押された時用にいろいろ
